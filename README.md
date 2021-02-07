@@ -1,19 +1,20 @@
 # BMP180-on-Heltec
-Use pressure sensor BMP180 on a Heltec WiFi Kit 32 simultaneous with built in OLED display 
+Use the BMP180 pressure sensor with a Heltec WiFi Kit 32 at the same time as the built-in OLED display
 
-Yes, it is pissible to use the standard I2C bus to which the built-in OLED display
-of the Heltec WiFi Kit 32 simultaneously with an external I2C decive (am prssure sensor BMP180 in this case)
+Yes, it is possible to use the standard I2C bus to which the integrated OLED display is connected
+of the Heltec WiFi Kit 32 at the same time with an external I2C device (in this case pressure sensor BMP180)
 
-This sketch reads pressure and temperatue data from BMP180 sensor
-from I2C bus and dispalys the results on the built-in OLED display
-connnect to the same I2C bus
+This sketch reads pressure and temperature data from the BMP180 sensor
+from the I2C bus and delivers the results on the built-in OLED display
+Connect to the same I2C bus
 
 Uses:
-- Heltec WiFi Kit 32 (with built in OLED display)
-- BMP180 sensor
-- Adafruit BMP085 Library
+- Heltec WiFi Kit 32 (with integrated OLED display)
+- BMP180 sensor connected to pin 4 (SDA) and pin 15 (SCL)
+- Adafruit BMP085 library
 - Arduino Framework
 
-The sketch also features an I2C scanner to retreive the adress of then internal OLED display and any external I2C device connected to both I2C buses.
-To switch to I2C scan mode change #define ScanMode false to true.
+The sketch also includes an I2C scanner that can be used to get the address of the internal OLED display and any external I2C devices connected to both I2C buses.
+To switch to I2C scan mode, change #define ScanMode false to true.
 
+Have fun!
