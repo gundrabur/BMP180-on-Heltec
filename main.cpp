@@ -1,6 +1,7 @@
 /*
 Version 1.0
 2021/02/07
+Christian Möller
 This sketch reads pressure and temperatue data from BMP180 sensor
 from I2C bus and dispalys the results on the built-in OLED display
 connnect to the same I2C bus
@@ -8,7 +9,13 @@ Uses:
 - Heltec WiFi Kit 32 (with built in OLED display)
 - BMP180 sensor
 - Adafruit BMP085 Library
+
+Changes:
+2021/02/08
+- The air pressure is now displayed with 2 decimal places
+- Text output optimized for font size
 */
+
 
 #include <heltec.h>          // Heltec Library
 #include <Adafruit_BMP085.h> // BMP085 Library from Adafruit, runs fine on the WiFi Kit 32
@@ -98,25 +105,48 @@ void scan2()
   Serial.println(" I2C Devices found.");
 }
 
-void drawString(String output)
+void drawString(String output, int fontSize)
 {
   // outputs a string to the built-in OLED display
   // on random locations to prevent burn in
 
   // calculating the max value of x position on the display
-  // depending on the length of the string
-  unsigned int maxX = 128 - (output.length() * 12);
-  unsigned int maxY = 42; // one line of text
-
+  // depending on the length of the string and the font size
+  unsigned int maxX = 128 - (output.length() * (fontSize / 2));
+  unsigned int maxY = 42; // one line of text, defalts to large font
   // text appears in a random position on the display so that the OLED does not burn in
-  int randx = random(0, maxX); // random X postion
-  int randy = random(0, maxY); // random Y position
+  int randx = 0; // default 0
+  int randy = 0; // default 0
 
   Heltec.display->clear();                           // clear the display
   Heltec.display->setTextAlignment(TEXT_ALIGN_LEFT); // text will be aligned to the left
-  Heltec.display->setFont(ArialMT_Plain_24);         // Text size
-  Heltec.display->drawString(randx, randy, output);  // draw the string
-  Heltec.display->display();                         // transfer ist to display
+  // there are only 3 font sizes to choose from!
+  switch (fontSize)
+  {
+  case 10:
+    Heltec.display->setFont(ArialMT_Plain_10); // Text size
+    maxY = 54; // maximum y position depends on font size
+    break;
+  case 16:
+    Heltec.display->setFont(ArialMT_Plain_16); // Text size
+    maxY = 49; // maximum y position depends on font size
+    break;
+  case 24:
+    Heltec.display->setFont(ArialMT_Plain_24); // Text size
+    maxY = 42; // maximum y position depends on font size
+    break;
+  default:
+    Heltec.display->setFont(ArialMT_Plain_16); // Text size
+    maxY = 49; // maximum y position depends on font size
+    break;
+  }
+
+  // text appears in a random position on the display so that the OLED does not burn in
+  randx = random(0, maxX); // random X postion
+  randy = random(0, maxY); // random Y position
+
+  Heltec.display->drawString(randx, randy, output); // draw the string
+  Heltec.display->display();                        // transfer it to display
 }
 
 void setup()
@@ -193,16 +223,16 @@ void loop()
     Serial.println();
 
     // output all data to OLED display
-    output = String(allSensorResults.pressure / 100) + " hPa";
-    drawString(output);
+    output = String(float(allSensorResults.pressure) / 100) + " hPa";
+    drawString(output, 16); // medium font size 16, it can be a real long string like "1199.99 hPa"
     delay(Delay);
 
-    output = String(allSensorResults.temperature) + " *C";
-    drawString(output);
+    output = String(allSensorResults.temperature) + " *C"; // large font 24
+    drawString(output, 24);
     delay(Delay);
 
-    output = String(allSensorResults.altitude) + " m";
-    drawString(output);
+    output = String(allSensorResults.altitude) + " m"; // large font 24
+    drawString(output, 24);
     delay(Delay);
   }
   else
