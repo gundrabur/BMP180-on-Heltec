@@ -17,4 +17,6 @@ Uses:
 The sketch also includes an I2C scanner that can be used to get the address of the internal OLED display and any external I2C devices connected to both I2C buses.
 To switch to I2C scan mode, change #define ScanMode false to true.
 
+Find short video of working device here: https://youtu.be/e1U47JysdzI
+
 Have fun!
