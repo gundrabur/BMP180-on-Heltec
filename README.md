@@ -6,7 +6,7 @@ of the Heltec WiFi Kit 32 at the same time with an external I2C device (in this 
 
 This sketch reads pressure and temperature data from the BMP180 sensor
 from the I2C bus and delivers the results on the built-in OLED display
-Connect to the same I2C bus
+connected to the same I2C bus
 
 Uses:
 - Heltec WiFi Kit 32 (with integrated OLED display)
